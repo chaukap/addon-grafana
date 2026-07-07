@@ -11,5 +11,6 @@ bashio::log.info 'Starting Grafana Image Renderer...'
 # bigger panels, so it is told to use /tmp instead.
 exec grafana-image-renderer server \
     --server.addr=127.0.0.1:8081 \
+    --server.auth-token="$(</data/renderer_token)" \
     --browser.path=/usr/bin/chromium \
     --browser.flag=--disable-dev-shm-usage
