@@ -1,6 +1,6 @@
 ---
 name: Grafana
-version: dev
+version: "13.0.0"
 slug: grafana
 description: The open platform for beautiful analytics and monitoring
 url: https://github.com/hassio-addons/addon-grafana
@@ -15,9 +15,11 @@ arch:
   - aarch64
   - amd64
 map:
-  - homeassistant_config
-  - share
-  - ssl
+  - type: addon_config
+    read_only: false
+  - type: homeassistant_config
+  - type: share
+  - type: ssl
 options:
   plugins: []
   custom_plugins: []

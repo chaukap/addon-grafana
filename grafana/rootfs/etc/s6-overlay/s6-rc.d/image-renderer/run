@@ -1,0 +1,12 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community Add-on: Grafana
+# Runs the Grafana Image Renderer service
+# ==============================================================================
+bashio::log.info 'Starting Grafana Image Renderer...'
+
+# Run Grafana Image Renderer
+exec grafana-image-renderer server \
+    --server.addr=127.0.0.1:8081 \
+    --browser.path=/usr/bin/chromium
