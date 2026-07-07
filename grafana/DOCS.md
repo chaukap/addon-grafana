@@ -79,6 +79,11 @@ Grafana setup. For a list of available plugins, see:
 
 <https://grafana.com/plugins>
 
+Plugins are installed into the add-on's persistent data storage
+(`/data/plugins`), so they survive add-on restarts and updates. A plugin
+listed here is only downloaded on the first start after it is added;
+plugins installed or updated via the Grafana UI persist as well.
+
 **Note**: _Adding plugins will result in a longer start-up for the add-on._
 
 ### Option: `custom_plugins`
@@ -108,6 +113,38 @@ documentation:
 <http://docs.grafana.org/installation/configuration/#using-environment-variables>
 
 **Note**: _Only environment variables starting with `GF_` are accepted.\_
+
+## Data persistence
+
+All Grafana state is stored in locations that survive add-on restarts and
+updates:
+
+- The Grafana database (dashboards, users, datasource definitions, alert
+  rules) lives in the add-on's private data storage (`/data/grafana.db`),
+  which is also included in Home Assistant backups.
+- Installed plugins (including custom datasource plugins) live in
+  `/data/plugins`.
+- Provisioning files live in the add-on configuration directory (see below).
+
+**Note**: _The add-on's data storage is deleted when the add-on is
+uninstalled. Take a Home Assistant backup before uninstalling._
+
+## Provisioning custom datasources & dashboards
+
+The add-on configuration directory (`/addon_configs/a0d7b954_grafana` on the
+host, accessible via the Samba or SSH add-ons) contains a `provisioning`
+folder with `datasources`, `dashboards`, `alerting` and `plugins`
+subfolders. Any Grafana [provisioning][grafana-provisioning] YAML files
+placed there are picked up on start-up, allowing you to define custom
+datasources as code, outside of the container.
+
+Inside the add-on container this directory is mounted at `/config`.
+
+**Note**: _The Home Assistant configuration directory is mounted read-only
+at `/homeassistant` (it is no longer available as `/config` inside this
+add-on). If you have file-based datasources pointing at
+`/config/home-assistant_v2.db` or similar, update them to use
+`/homeassistant/home-assistant_v2.db`._
 
 ## Using it with the InfluxDB Community add-on
 
@@ -154,11 +191,17 @@ Assistant Cloud. This includes embedding Grafana resources with an iframe or
 rendered image inside of a dashboard. For more details see
 [Anonymous login not working, Grafana add-on 3.0.0 #55](https://github.com/hassio-addons/addon-grafana/issues/55).
 
+## Panel image rendering
+
+The add-on bundles the [Grafana Image Renderer][image-renderer] as a
+built-in service (the renderer plugin was removed in Grafana 13), so
+rendering panel images works out of the box on both `amd64` and `aarch64`
+systems. No configuration is required.
+
 ## Known issues and limitations
 
-- `To render a panel image, you must install the Grafana Image Renderer plugin.`
-  This message is shown on ARM devices, like a Raspberry Pi. The Grafana Image
-  Renderer plugin is not available for these devices.
+- Panel image rendering uses a headless Chromium browser, which can be
+  memory hungry. On low-memory devices, rendering large panels may fail.
 
 ## Changelog & Releases
 
@@ -227,6 +270,8 @@ SOFTWARE.
 [discord]: https://discord.me/hassioaddons
 [forum]: https://community.home-assistant.io/t/home-assistant-community-add-on-grafana/54674?u=frenck
 [frenck]: https://github.com/frenck
+[grafana-provisioning]: https://grafana.com/docs/grafana/latest/administration/provisioning/
+[image-renderer]: https://github.com/grafana/grafana-image-renderer
 [influxdb-addon]: https://github.com/hassio-addons/addon-influxdb
 [issue]: https://github.com/hassio-addons/addon-grafana/issues
 [reddit]: https://reddit.com/r/homeassistant
