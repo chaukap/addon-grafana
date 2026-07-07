@@ -75,5 +75,5 @@ if bashio::config.has_value 'custom_plugins'; then
 fi
 
 
-# Run Grafana
-exec grafana-server "${options[@]}"
+# Run Grafana (the grafana-server binary was removed in Grafana 13)
+exec grafana server "${options[@]}"
