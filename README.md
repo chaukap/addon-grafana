@@ -36,6 +36,16 @@ insights to your home.
 
 [:books: Read the full add-on documentation][docs]
 
+## Installation
+
+This is the development repository for the add-on. To install it, add the
+[chaukap/homeassistant-apps][apps-repo] repository to your Home Assistant
+add-on store instead — releases are synced there from this repository:
+
+```bash
+rsync -a --delete grafana/ ../homeassistant-apps/grafana/
+```
+
 ## Support
 
 Got questions?
@@ -107,7 +117,8 @@ SOFTWARE.
 [discord-ha]: https://discord.gg/c5DvZ4e
 [discord-shield]: https://img.shields.io/discord/478094546522079232.svg
 [discord]: https://discord.me/hassioaddons
-[docs]: https://github.com/hassio-addons/addon-grafana/blob/main/grafana/DOCS.md
+[apps-repo]: https://github.com/chaukap/homeassistant-apps
+[docs]: https://github.com/chaukap/addon-grafana/blob/main/grafana/DOCS.md
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg
 [forum]: https://community.home-assistant.io/t/home-assistant-community-add-on-grafana/54674?u=frenck
 [frenck]: https://github.com/frenck
