@@ -23,6 +23,12 @@ if ! bashio::fs.file_exists "/data/secret"; then
     echo "${SUPERVISOR_TOKEN}" > /data/secret
 fi
 
+# Sets shared token used to authenticate against the image renderer.
+# Grafana refuses to start with the default renderer token.
+if ! bashio::fs.file_exists "/data/renderer_token"; then
+    cat /proc/sys/kernel/random/uuid > /data/renderer_token
+fi
+
 # Install user configured/requested Grafana plugins
 if bashio::config.has_value 'plugins'; then
     for plugin in $(bashio::config 'plugins'); do

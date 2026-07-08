@@ -54,6 +54,7 @@ export "GF_SERVER_ROOT_URL=http://localhost:3000${ingress_entry}"
 # Connect Grafana to the bundled image renderer service
 export "GF_RENDERING_SERVER_URL=http://127.0.0.1:8081/render"
 export "GF_RENDERING_CALLBACK_URL=http://127.0.0.1:3000/"
+export "GF_RENDERING_RENDERER_TOKEN=$(</data/renderer_token)"
 
 # Load custom environment variables
 for var in $(bashio::config 'env_vars|keys'); do
